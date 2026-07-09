@@ -50,6 +50,13 @@ medical-llm-self-bias-audit/
 
 ## Execution & Workflow Pipeline
 
+### Step-by-Step Pipeline
+This audit was executed sequentially across four distinct phases:
+1. **Data Curation (Notebook 1):** Ingested the PubMedQA dataset and programmatically sliced it into a strictly balanced baseline of 100 clinical questions (50 "yes", 50 "no") to prevent baseline evaluation skew.
+2. **Student Generation (Notebooks 2A & 2B):** Fed the 100 clinical questions to all five student models. Commercial models were queried via cloud APIs, while open-weights models (Llama 3.1, Gemma 3) were downloaded and sharded locally using 4-bit quantization.
+3. **Automated Auditing (Notebook 3):** Passed the compiled student answers to the three automated commercial judges using the DeepEval framework. Judges mathematically scored each answer for both *Faithfulness* (hallucination checks) and *Correctness* (clinical accuracy). 
+4. **Bias Analysis (Notebook 4):** Isolated "Self-Evaluation Rows" (e.g., GPT-4o judging GPT-4o) and calculated the mathematical delta against how *independent* judges graded those exact same outputs to quantify the presence of self-criticism or self-enhancement bias.
+
 ### Environment Constraints & Infrastructure
 The workload is split explicitly by compute requirements to optimize infrastructure efficiency:
 * API Scripts (Notebooks 1, 2A, 3, 4) operate on zero-cost CPU tiers, acting as asynchronous traffic routers calling remote API backends.
