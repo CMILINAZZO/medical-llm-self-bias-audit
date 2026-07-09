@@ -3,7 +3,7 @@
 ## Project Overview
 Evaluating Generative AI in clinically sensitive domains remains an open challenge. While modern architectures increasingly rely on "LLM-as-a-Judge" techniques to automate quality assurance, the underlying biases of these automated evaluators are under-audited. 
 
-This project establishes a controlled evaluation pipeline to audit the calibration of advanced Large Language Models (LLMs) acting as clinical judges. Specifically, it investigates whether safety alignment, reinforcement learning from human feedback (RLHF), and hyper-conservative clinical guardrails introduce a pronounced "self-criticism bias"—causing proprietary systems to grade their own medical reasoning more harshly than independent baseline judges.
+This project establishes a controlled evaluation pipeline to audit the calibration of advanced Large Language Models (LLMs) acting as clinical judges. Specifically, it investigates whether safety alignment, reinforcement learning from human feedback (RLHF), and hyper-conservative clinical guardrails introduce a pronounced "self-criticism bias" - causing proprietary systems to grade their own medical reasoning more harshly than independent baseline judges.
 
 ---
 
