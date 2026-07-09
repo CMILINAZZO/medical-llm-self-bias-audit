@@ -57,6 +57,12 @@ The workload is split explicitly by compute requirements to optimize infrastruct
 
 **Security Enforcement**: Under no circumstances are provider API tokens hardcoded into code blocks. This project utilizes Google Colab's encrypted environment Secrets utility to populate system tokens programmatically at runtime.
 
+### Challenges & Engineering Realities
+Deploying LLM-as-a-Judge frameworks in a live pipeline rarely goes as smoothly as the academic papers suggest. Building this matrix required navigating several real-world cloud and infrastructure hurdles:  
+* **The Multi-Step API Multiplier:** Standard evaluation frameworks (like DeepEval) execute multi-step extractions under the hood to verify factual claims. Evaluating hundreds of pairs sequentially triggered severe API rate limits and extreme latency bottlenecks.
+* **Cost-Aware Scope Scaling:** To mitigate run-away API costs and timeout errors, the generation phase processed the full 100-row baseline, but the final evaluation matrix was strategically scaled to a focused 50-row target (yielding 750 distinct evaluations). This proved sufficient for mapping baseline biases while maintaining strict compute and budget constraints.
+* **Building a "Smart Resume" Architecture:** When API latency caused a hard billing timeout mid-execution, the pipeline was forced to halt. Rather than restarting and doubling costs, a recovery script was built to extract partial data from active runtime memory. The pipeline was refactored with a dynamic "Smart Resume" loop that cross-referenced saved CSVs to bypass previously scored responses, preventing duplicate API charges and wasted cloud compute.
+
 ## Academic Context & Foundations
 * "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena" (Zheng et al., 2023) - Initial formalization of position, verbosity, and self-enhancement biases.
 * "Self-Preference Bias in LLM-as-a-Judge" (arXiv, 2024) - Demonstration of style-matching and self-preferential tendencies in foundational architectures.
